@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor List</title>
+    <style>
+        /* Include your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            padding: 20px;
+        }
+        .vendors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .vendor-item {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 500px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .vendor-item img {
+            width: 150px;
+            height: auto;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+        .vendor-item h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .vendor-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .vendor-item a {
+            text-decoration: none;
+            color: #333;
+        }
+        .vendor-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Our Vendors</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="vendor.html">Vendors</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+    
+    <section id="vendor-list" class="vendors">
+        <!-- Vendor items will be rendered here by the script -->
+    </section>
+
+    <script>
+        const vendors = [
+            { id: 1, name: 'Burton Food', location: 'JacksonVille', description: 'varieties of Burges and Desserts.', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-YThQnCOrJieZoIVlDsBPGQjmGEbSJEjmHw&usqp=CAU' },
+            { id: 2, name: 'Dva Stapless', location: 'Arlimgton', description: 'Snacks and Drinks', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkABi3OYDghRDIS4xq7WaxkJOaqKYXIywPiA&usqp=CAU' },
+            { id: 3, name: 'SupDesserto', location: 'Florida', description: 'Sweets and Bakes.', imageUrl: 'https://antdisplay.com/pub/media/interior_design/fast_food_shop_4_.jpg' },
+            { id: 4, name: 'Sara Bakes', location: 'Lansing', description: 'Cookies And Cakes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTChdmCECcMQGFNHhiI9mfdPNg7jIUv7pfCSvLKjZj4mCar6xI-rRiB4SAF&s=10' },
+            { id: 5, name: 'Ramen Shop', location: 'Kansan City', description: 'Varieties of noodles with various toppings.', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzM5covnw2yXQNMcqQJshwryzF5BOnS5eazJXMM5Zp5XdtjiZwrmB4Mf8&s=10' }
+        ];
+
+        const renderVendors = () => {
+            const vendorList = document.getElementById('vendor-list');
+            vendorList.innerHTML = '';
+            vendors.forEach(vendor => {
+                const div = document.createElement('div');
+                div.className = 'vendor-item';
+                div.innerHTML = `
+                    <img src="${vendor.imageUrl}" alt="${vendor.name}">
+                    <div>
+                        <h3><a href="vendor-detail.html?id=${vendor.id}">${vendor.name}</a></h3>
+                        <p>${vendor.location}</p>
+                        <p>${vendor.description}</p>
+                    </div>
+                `;
+                vendorList.appendChild(div);
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', renderVendors);
+    </script>
+</body>
+</html>
+
+
