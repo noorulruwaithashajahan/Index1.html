@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Catalog</title>
+    <style>
+        /* Include your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            padding: 20px;
+        }
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .food-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .food-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .food-item h3 {
+            margin: 10px 0 5px 0;
+            font-size: 1.25rem;
+        }
+        .food-item p {
+            margin: 0;
+            color: #555;
+        }
+        #add-to-cart-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 1rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #add-to-cart-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Food Catalog</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="vendor.html">Vendors</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+    
+    <section id="food-list" class="catalog">
+        <!-- Food items will be rendered here by the script -->
+    </section>
+
+    <script>
+        const fetchFoodItems = async () => {
+            const apiUrl = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Dessert'; // Example category
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                renderFoodItems(data.meals);
+            } catch (error) {
+                console.error('Error fetching food items:', error);
+            }
+        };
+
+        const renderFoodItems = (meals) => {
+            const foodList = document.getElementById('food-list');
+            foodList.innerHTML = '';
+            meals.forEach(meal => {
+                const div = document.createElement('div');
+                div.className = 'food-item';
+                div.innerHTML = `
+                    <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                    <h3>${meal.strMeal}</h3>
+                    <p>Price: $5.99</p>
+                    <button id="add-to-cart-button" onclick="addToCart('${meal.strMeal}', '${meal.strMealThumb}', '$5.99')">Add to Cart</button>
+                `;
+                foodList.appendChild(div);
+            });
+        };
+
+        const addToCart = (name, image, price) => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name, image, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'cart.html'; // Redirect to cart page
+        };
+
+        document.addEventListener('DOMContentLoaded', fetchFoodItems);
+    </script>
+</body>
+</html>
