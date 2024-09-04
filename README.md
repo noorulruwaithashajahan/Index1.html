@@ -11,10 +11,6 @@ Clone the Repository
 
 Clone this repository to your local machine using Git:
 
-sh
-Copy code
-git clone <repository-url>
-Navigate to the Project Directory
 
 Use your terminal or file manager to navigate to the project directory.Open the Project
 
