@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        /* Include your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            padding: 20px;
+        }
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .food-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .food-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .food-item h3 {
+            margin: 10px 0 5px 0;
+            font-size: 1.25rem;
+        }
+        .food-item p {
+            margin: 0;
+            color: #555;
+        }
+        #coupon-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #coupon-code {
+            padding: 5px;
+            font-size: 1rem;
+        }
+        #apply-coupon {
+            padding: 5px 10px;
+            font-size: 1rem;
+        }
+        #checkout-button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #checkout-button:hover {
+            background-color: #555;
+        }
+        #checkout-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shopping Cart</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="vendor.html">Vendors</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+    
+    <section id="cart" class="catalog">
+        <div id="cart-items">
+            <!-- Cart items will be rendered here by the script -->
+        </div>
+
+        <div id="coupon-section" class="coupon-section">
+            <input type="text" id="coupon-code" placeholder="Enter coupon code">
+            <button id="apply-coupon">Apply Coupon</button>
+            <p id="coupon-message"></p>
+        </div>
+
+        <button id="checkout-button">Checkout</button>
+        <p id="checkout-message"></p>
+    </section>
+
+    <script>
+        const renderCartItems = () => {
+            const cartItems = document.getElementById('cart-items');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cartItems.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'food-item';
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p>Price: ${item.price}</p>
+                    <button onclick="removeItem(${index})">Remove</button>
+                    <button onclick="editItem(${index})">Edit</button>
+                `;
+                cartItems.appendChild(div);
+            });
+        };
+
+        const removeItem = (index) => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCartItems();
+        };
+
+        const editItem = (index) => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const newPrice = prompt("Enter new price:", cart[index].price);
+            if (newPrice) {
+                cart[index].price = newPrice;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCartItems();
+            }
+        };
+
+        const applyCoupon = () => {
+            const couponCode = document.getElementById('coupon-code').value;
+            const couponMessage = document.getElementById('coupon-message');
+            
+            if (couponCode === "DISCOUNT10") {
+                couponMessage.textContent = "Coupon applied! 10% off";
+                // Apply discount logic here
+            } else {
+                couponMessage.textContent = "Invalid coupon code.";
+            }
+        };
+
+        const checkout = () => {
+            const trackingId = Math.random().toString(36).substring(2, 15).toUpperCase();
+            document.getElementById('checkout-message').textContent = `Order successfully placed! Tracking ID: ${trackingId}`;
+            // Clear cart after checkout
+            localStorage.removeItem('cart');
+            renderCartItems();
+        };
+
+        document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
+        document.getElementById('checkout-button').addEventListener('click', checkout);
+
+        document.addEventListener('DOMContentLoaded', renderCartItems);
+    </script>
+</body>
+</html>
